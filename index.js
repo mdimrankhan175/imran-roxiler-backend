@@ -429,6 +429,13 @@ async function fetchPieChart(numericMonth) {
       GROUP BY category;
     `;
 
-    const pieChartData = await db.all(sqlQuery, [numericMonth]);
-    return pieChartData;
-}
+    const rows = await db.all(sqlQuery, [numericMonth]);
+
+    res.json({ selectedMonth, pieChartData: rows });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+module.exports = app;
